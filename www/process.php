@@ -27,7 +27,7 @@ if(!empty($errors)){
 require_once 'ApiClient.php';
 $api = new ApiClient();
 
-$url = 'https://wttr.in/?format=j1'; 
+$url = 'https://www.themealdb.com/api/json/v1/1/categories.php'; 
 $apiData = $api->request($url);
 
 $_SESSION['api_data'] = $apiData;

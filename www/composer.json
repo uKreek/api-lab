@@ -1,8 +1,8 @@
 {
-    "name": "formalin/api-lab",
+    "name": "formalin/www",
     "autoload": {
         "psr-4": {
-            "Formalin\\ApiLab\\": "src/"
+            "Formalin\\Www\\": "src/"
         }
     },
     "authors": [
@@ -11,5 +11,7 @@
             "email": "kurlyk013@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^7.10"
+    }
 }

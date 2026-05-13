@@ -1,5 +1,16 @@
 <?php session_start(); ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style_index.css">
+    <title>Document</title>
+</head>
+
+</html>
+
 <?php if(isset($_SESSION['username'])): ?>
     <p>Данные из сессии:</p>
     <ul>
@@ -23,9 +34,9 @@
     <?php unset($_SESSION['errors']); ?>
 <?php endif; ?>
 
-<?php if (isset($_SESSION['api_data'])) {
+<?php if (isset($_SESSION['api_data']['categories'][3]['strCategoryDescription'])) {
     echo "<h3>Данные из API:</h3>";
-    echo "<pre>" . print_r($_SESSION['api_data'], true) . "</pre>";
+    echo "<pre>" . print_r($_SESSION['api_data']['categories'][3]['strCategoryDescription'], true) . "</pre>";
 } ?>
 
 <?php require_once 'UserInfo.php';
