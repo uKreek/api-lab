@@ -1,0 +1,15 @@
+{
+    "name": "formalin/api-lab",
+    "autoload": {
+        "psr-4": {
+            "Formalin\\ApiLab\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Merkulova Elizaveta",
+            "email": "kurlyk013@gmail.com"
+        }
+    ],
+    "require": {}
+}
