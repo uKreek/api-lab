@@ -24,6 +24,15 @@ if(!empty($errors)){
     exit();
 }
 
+require_once 'ApiClient.php';
+$api = new ApiClient();
+
+$url = 'https://wttr.in/?format=j1'; 
+$apiData = $api->request($url);
+
+$_SESSION['api_data'] = $apiData;
+
+
 header("Location: index.php");
 exit();
 
