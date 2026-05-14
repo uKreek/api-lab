@@ -26,6 +26,8 @@ Merkulova Elizaveta, AM-2
 
 ## 📸 Screenshots
 ![alt](screenshots/1.png)
+![alt](screenshots/2.png)
+![alt](screenshots/3.png)
 
 ## 🎉 Result
-Super Puper PHP page with cookies, API and user info!
+Super Puper PHP page with cookies, API and user info! caching has been implemented.
