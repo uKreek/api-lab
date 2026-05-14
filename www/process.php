@@ -24,13 +24,6 @@ if(!empty($errors)){
     exit();
 }
 
-require_once 'ApiClient.php';
-$api = new ApiClient();
-
-$url = 'https://www.themealdb.com/api/json/v1/1/categories.php'; 
-$apiData = $api->request($url);
-
-$_SESSION['api_data'] = $apiData;
 
 
 header("Location: index.php");

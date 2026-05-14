@@ -6,7 +6,9 @@ class ApiClient {
     private Client $client;
 
     public function __construct() {
-        $this->client = new Client();
+        $this->client = new Client([
+            'verify' => false
+        ]);
     }
 
     public function request(string $url): array {

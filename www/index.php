@@ -1,4 +1,23 @@
-<?php session_start(); ?>
+<?php
+session_start();
+$cacheFile = 'api_cache.json';
+$cacheTtl = 300; 
+
+// Проверяем кэш
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTtl)) {
+    $_SESSION['api_data'] = json_decode(file_get_contents($cacheFile), true);
+} else {
+    // Если кэша нет, выполняем запрос (как и раньше)
+    require_once 'ApiClient.php';
+    $api = new ApiClient();
+    $apiData = $api->request('https://www.themealdb.com/api/json/v1/1/random.php');
+    
+    if (!isset($apiData['error'])) {
+        file_put_contents($cacheFile, json_encode($apiData, JSON_UNESCAPED_UNICODE));
+    }
+    $_SESSION['api_data'] = $apiData;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,23 +43,52 @@
 
 
 <?php if(isset($_SESSION['errors'])): ?>
-    <ul style="color:red;">
+    <ul>
+        <div class="error-list">
         <?php foreach($_SESSION['errors'] as $error): ?>
             <li><?= $error ?></li>
         <?php endforeach; ?>
+        </div>
     </ul>
     <?php unset($_SESSION['errors']); ?>
 <?php endif; ?>
 
-<?php if (isset($_SESSION['api_data']['categories'][3]['strCategoryDescription'])) {
-    echo "<h3>Данные из API:</h3>";
-    echo "<pre>" . print_r($_SESSION['api_data']['categories'][3]['strCategoryDescription'], true) . "</pre>";
-} ?>
+
 
 <?php require_once 'UserInfo.php';
-$info = UserInfo::getInfo();
+$info = UserInfo::getInfo(); 
 
-echo "<h3>Информация о пользователе:</h3>"; ?>
+if (isset($_SESSION['api_data']['meals'][0]['strInstructions'])) {
+    echo "<h3>Данные из API:</h3>";
+    echo "<pre>" . print_r($_SESSION['api_data']['meals'][0]['strInstructions'], true) . "</pre>";
+} ?>
+
+
+<button id="refreshBtn">Обновить данные</button>
+<div id="apiResult">
+    </div>
+
+<script>
+document.getElementById('refreshBtn').addEventListener('click', function() {
+    const output = document.getElementById('apiResult');
+    output.innerHTML = "Загрузка...";
+
+    fetch('refresh.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                output.innerHTML = `<p style="color:red;">Ошибка: ${data.error}</p>`;
+            } else {
+                output.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+        })
+        .catch(err => {
+            output.innerHTML = `<p style="color:red;">Сервер недоступен или произошла ошибка.</p>`;
+        });
+});
+</script>
+
+<?php echo "<h3>Информация о пользователе:</h3>"; ?>
 <div class="card">
 <?php foreach ($info as $key => $val) {
     echo htmlspecialchars($key) . ': ' . htmlspecialchars($val) . '<br>';
@@ -52,6 +100,7 @@ echo "<h3>Информация о пользователе:</h3>"; ?>
 <a href="view.php">Посмотреть все данные</a> |
 <a href="cookies.php">Куки</a>
 </div>  
+
 
 </body> 
 </html>
